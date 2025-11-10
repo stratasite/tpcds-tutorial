@@ -1,0 +1,12 @@
+# This will define all the data warehouses that
+# are availalbe to this project.  Each connection should
+# use one of these Adapters: druid,postgres,trino,snowflake,mysql,sqlserver,duckdb,athena
+
+# Datasource key should be unique in the Project
+tpcds:
+  name: TPC-DS (Postgres)
+  adapter: postgres
+  tier: cold
+  host: localhost
+  username: tpcds_user
+  database: tpcds
