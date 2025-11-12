@@ -4,9 +4,7 @@
 
 # Datasource key should be unique in the Project
 tpcds:
-  name: TPC-DS (Postgres)
-  adapter: postgres
-  tier: cold
-  host: localhost
-  username: tpcds_user
-  database: tpcds
+  name: TPC-DS (DuckDb)
+  adapter: duckdb
+  tier: hot
+  file: /home/ajo/Code/tpcds-tutorial/tpcds.duckdb

@@ -2,8 +2,8 @@
 # target Strata servers.
 
 # Display name of the Project. Must be Unique per Strata instance.
-name: tpcds
-description: True model representing tpcds data warehouse
+name: TPCDS - Tutorial 
+description: A nearly complete model of the TPC DS benchmark system. 
 
 # The production branch. This will be the branch used by 
 # default. Only developers can actually change branches for
