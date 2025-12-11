@@ -17,6 +17,12 @@ cost: 100
 fields:
 
   - type: dimension
+    name: Date ID
+    data_type: integer
+    expression:
+      sql: cs_date_sk
+
+  - type: dimension
     name: Catalog Order Number
     description: Order number for catalog sale
     data_type: integer
