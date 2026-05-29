@@ -1,0 +1,103 @@
+# Semantic Security Policies
+#
+# This file defines row-level security policies enforced at query planning time.
+# Policies are branch-scoped and deployed alongside your semantic model.
+#
+# Two enforcement modes:
+#
+#   mask_data   — Sensitive column values are replaced with a mask string.
+#                 Rows remain in the result set; users can see that restricted
+#                 data exists but cannot read it.
+#
+#   filter_data — Rows for context values the user cannot access are removed
+#                 entirely. Restricted data is invisible to the user.
+#
+# How it works:
+#   1. A policy is triggered when a query projects a field tagged with one of
+#      the trigger tags (e.g. "pii").
+#   2. The context_dimension defines the security boundary (e.g. "Call Center ID").
+#      It must be reachable in every universe that contains a triggered field,
+#      otherwise the query is rejected with a hard error.
+#   3. Permission resolution determines which context dimension values the current
+#      user is allowed to see, derived from their group memberships or user record.
+#
+# Tagging fields: add a tags key to any dimension in your table YAML files:
+#
+#   fields:
+#     - type: dimension
+#       name: Agent Name
+#       tags: [pii]
+#       data_type: string
+#       expression:
+#         sql: agent_name
+
+policies:
+  - name: Restrict Income Bands
+    mode: mask_data
+    mask_value: "#######"
+    triggers:
+      field_tags: [pii]
+    context_dimension: Customer Address City
+    permission_resolution:
+      source: groups
+      value_from: tag
+      tag_key: city
+    bypass:
+      system_admin: true
+      project_admin: true
+
+
+# ── Example: mask PII dimensions scoped by call center ──────────────────────
+#
+# - name: PII Call Center Masking
+#   mode: mask_data              # mask_data | filter_data
+#   mask_value: "#######"        # Value shown to users without access (mask_data only)
+#
+#   triggers:
+#     field_tags: [pii]          # Triggers on any field tagged "pii"
+#     # field_names:             # Optional: trigger on specific fields by display name
+#     #   - Agent Name           # Resolved to UIDs at deploy time
+#
+#   # Dimension that scopes visibility. Resolved by name at deploy time.
+#   # Must be reachable in the universe for any query that includes a triggered field.
+#   context_dimension: Call Center ID
+#
+#   permission_resolution:
+#     source: groups             # groups | user
+#     value_from: tag            # groups: name | tag   /   user: email | tag
+#     tag_key: call_center_id   # Required when value_from is "tag".
+#                                # Extracts the value from group tags formatted as "call_center_id:TMNT"
+#
+#   bypass:
+#     system_admin: true         # System admins bypass this policy entirely
+#     project_admin: false
+#
+# ── Example: filter rows so each user sees only their own employee record ────
+#
+# - name: Employee Self-Service
+#   mode: filter_data
+#
+#   triggers:
+#     field_tags: [employee_pii]
+#
+#   context_dimension: Employee Email
+#
+#   permission_resolution:
+#     source: user               # Resolve from the current user's own attributes
+#     value_from: email          # Allowed value = the authenticated user's email address
+#
+#   bypass:
+#     system_admin: true
+#     project_admin: false
+  - name: Secure Profit View
+    mode: filter_data
+    triggers:
+      field_tags: [secure-cat]
+    context_dimension: Item Category
+    permission_resolution:
+      source: groups
+      value_from: tag
+      tag_key: cat
+    bypass:
+      system_admin: true
+      project_admin: true

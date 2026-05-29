@@ -1,1 +1,3 @@
-*.duckdb
+.strata
+tpcds.duckdb
+.strata_cli/

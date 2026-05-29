@@ -99,6 +99,7 @@ fields:
   - type: dimension
     name: Customer Email Address
     description: Customer email address
+    tags: ["pii"]
     data_type: string
     expression:
       lookup: true
