@@ -20,12 +20,15 @@ fields:
     name: Income Band Lower Bound
     description: Lower bound of income band
     data_type: integer
+    tags: ["pii"]
     expression:
       lookup: true
       sql: ib_lower_bound
 
   - type: dimension
     name: Income Band Upper Bound
+    tags:
+      - pii
     description: Upper bound of income band
     data_type: integer
     expression:
