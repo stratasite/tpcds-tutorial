@@ -9,3 +9,4 @@ description: A nearly complete model of the TPC DS benchmark system.
 # default. Only developers can actually change branches for
 # testing in th app.
 production_branch: master
+server: http://localhost:3000
