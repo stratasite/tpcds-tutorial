@@ -11,3 +11,5 @@ description: A nearly complete model of the TPC DS benchmark system.
 production_branch: master
 server: http://localhost:3000
 git: git@github.com:stratasite/tpcds_tutorial
+
+project_id: 1
