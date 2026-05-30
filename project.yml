@@ -8,8 +8,7 @@ description: A nearly complete model of the TPC DS benchmark system.
 # The production branch. This will be the branch used by 
 # default. Only developers can actually change branches for
 # testing in th app.
-production_branch: secure-policy 
+production_branch: main 
 server: http://localhost:3000
 git: git@github.com:stratasite/tpcds_tutorial
 
-project_id: 1
